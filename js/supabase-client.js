@@ -5,8 +5,8 @@
  */
 
 const SUPABASE_CONFIG = {
-  // Replace with your Project URL from Supabase Dashboard -> Project Settings -> API
-  url: window.SUPABASE_URL || localStorage.getItem('classic_supabase_url') || '',
+  // Classic Music Institute Supabase Project URL
+  url: window.SUPABASE_URL || localStorage.getItem('classic_supabase_url') || 'https://wokewtrrgyexbwjropgn.supabase.co',
   // Your Supabase Publishable Key
   publishableKey: 'sb_publishable_FLTQgdBCO5loq1NWo4Ll5g_I-U8H4-H'
 };
