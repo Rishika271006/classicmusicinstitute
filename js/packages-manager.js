@@ -229,7 +229,7 @@ const PackagesManager = {
       container.innerHTML = `
         <div style="text-align:center; padding: 4rem 2rem; grid-column: 1/-1; background: #FAF7EE; border: 1px dashed var(--gold-primary); border-radius: 16px;">
           <h3 style="font-family: var(--font-heading); color: #0A0F1D; margin-bottom: 0.5rem;">No Active Packages Available</h3>
-          <p style="color: #64748B; margin-bottom: 1.5rem;">Our admissions committee is currently updating syllabus terms. Please contact our front desk at SCO 64-65, Sector 34-A Chandigarh or call <strong>+91 83519 17891</strong>.</p>
+          <p style="color: #64748B; margin-bottom: 1.5rem;">Our admissions committee is currently updating syllabus terms. Please contact our front desk at SCO 64-65, Sector 34-A Chandigarh or call <strong>+91 98052 60021</strong>.</p>
           <a href="contact.html" class="btn btn-gold">Contact Admissions Desk</a>
         </div>
       `;

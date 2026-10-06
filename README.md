@@ -9,7 +9,7 @@ Official website and fee management administrative portal for **Classic Music In
 - **Institute Name:** Classic Music Institute
 - **Domain:** `classicinstitute.com`
 - **Campus Address:** SCO 64-65, 2nd Floor, Sector 34-A, Chandigarh - 160022, India
-- **Admissions Hotline:** +91 83519 17891 / 8351917891
+- **Admissions Hotline:** +91 98052 60021 / 9805260021
 - **Studio Operating Hours:** Monday – Friday: 9:00 AM – 8:30 PM | Saturday: 9:30 AM – 7:00 PM (Masterclasses & Trials)
 - **Color Theme:** Obsidian Navy (`#0A0F1D`, `#111A30`), Champagne Gold (`#D4AF37`, `#C9A050`), and Ivory (`#FBF9F5`)
 - **Exam Board Affiliations:** Trinity College London, ABRSM (Royal Schools of Music), Rockschool (RSL Awards), Akhil Bharatiya Gandharva Mahavidyalaya
