@@ -110,11 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
   // --- Trial Form Submission Handler ---
   const trialForms = document.querySelectorAll('.trial-booking-form');
   trialForms.forEach(form => {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       const name = this.querySelector('[name="full_name"]')?.value || 'Music Lover';
       const phone = this.querySelector('[name="phone_number"]')?.value || '';
+      const email = this.querySelector('[name="email_address"]')?.value || '';
       const course = this.querySelector('[name="course_interest"]')?.value || 'Selected Course';
+      const location = this.querySelector('[name="mode_preference"]')?.value || 'Chandigarh Campus (SCO 64-65, Sector 34-A)';
 
       // Visual feedback
       const submitBtn = this.querySelector('button[type="submit"]');
@@ -122,32 +124,52 @@ document.addEventListener('DOMContentLoaded', function () {
       submitBtn.innerHTML = '<span>Reserving Your Seat...</span>';
       submitBtn.disabled = true;
 
+      // Save to Supabase Cloud Database if configured
+      if (window.ClassicSupabase) {
+        await window.ClassicSupabase.saveAuditionBooking({
+          name, phone, email, course, location
+        });
+      }
+
       setTimeout(() => {
         alert(`Thank you, ${name}! Your free 1-on-1 audition & assessment for ${course} has been registered.\n\nOur Senior Academic Advisor from Chandigarh Campus (SCO 64-65, Sector 34-A) will call you at ${phone} within 2 business hours.`);
         this.reset();
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
         closeModal();
-      }, 900);
+      }, 700);
     });
   });
 
   // --- Contact Form Submission Handler ---
   const contactForm = document.getElementById('instituteContactForm');
   if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
+    contactForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+      const name = this.querySelector('[name="full_name"]')?.value || '';
+      const phone = this.querySelector('[name="phone_number"]')?.value || '';
+      const email = this.querySelector('[name="email_address"]')?.value || '';
+      const subject = this.querySelector('[name="inquiry_subject"]')?.value || 'General Inquiry';
+      const message = this.querySelector('[name="message_content"]')?.value || '';
+
       const submitBtn = this.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
       submitBtn.innerHTML = '<span>Sending Message...</span>';
       submitBtn.disabled = true;
+
+      // Save to Supabase Cloud Database if configured
+      if (window.ClassicSupabase) {
+        await window.ClassicSupabase.saveContactInquiry({
+          name, phone, email, subject, message
+        });
+      }
 
       setTimeout(() => {
         alert("Thank you for contacting Classic Music Institute! Your message has been received by our Admissions & Student Support Desk. We will get back to you shortly.");
         this.reset();
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
-      }, 800);
+      }, 600);
     });
   }
 
