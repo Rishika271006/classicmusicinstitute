@@ -1,8 +1,8 @@
-/**
+﻿/**
  * Classic Music Institute - Interactive Script
  * Domain: classicinstitute.com
  * Address: SCO 64-65, 2nd Floor, Sector 34-A, Chandigarh
- * Phone: +91 98052 60021
+ * Phone: +91 83519 17891
  */
 
 document.addEventListener('DOMContentLoaded', function () {
