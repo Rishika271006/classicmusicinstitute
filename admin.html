@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Fee Packages Management | Classic Music Institute</title>
+  <meta name="description" content="Administrative control center to create, update, or remove student fee packages for Classic Music Institute Chandigarh.">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ================= AUTHENTICATION OVERLAY ================= -->
+  <div class="auth-overlay" id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="images/logo-light.svg" alt="Classic Music Institute" width="240" height="52">
+      </div>
+      <h2 class="auth-title">Administrative Portal</h2>
+      <p class="auth-subtitle">Sign in to manage tuition plans, course fees, and public admissions packages.</p>
+
+      <div class="auth-error" id="authError"></div>
+
+      <form id="loginForm">
+        <div class="auth-field">
+          <label class="auth-label" for="loginUsername">Staff Username</label>
+          <input type="text" id="loginUsername" class="auth-input" placeholder="admin" required autocomplete="username">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="loginPassword">Access Key / Password</label>
+          <input type="password" id="loginPassword" class="auth-input" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="auth-hint">
+          <span>Demo Credentials: <strong>admin</strong> / <strong>classic2026</strong></span>
+          <button type="button" class="auth-quick-fill-btn" id="quickFillBtn">1-Click Sign-In</button>
+        </div>
+
+        <button type="submit" class="btn btn-gold btn-lg" style="width: 100%; margin-top: 0.5rem;">
+          <span>Unlock Admin Console</span>
+        </button>
+      </form>
+      
+      <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
+        <a href="classes.html" style="color: var(--gold-light);">← Return to Public Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOP ADMIN NAVIGATION BAR ================= -->
+  <header class="admin-navbar">
+    <div class="admin-nav-inner">
+      <div class="admin-brand">
+        <a href="index.html" title="Go to Institute Homepage">
+          <img src="images/logo-light.svg" alt="Classic Music Institute" class="admin-brand-logo">
+        </a>
+        <span class="admin-badge-portal">Fee Packages Console</span>
+      </div>
+
+      <div class="admin-nav-actions">
+        <div class="sync-status">
+          <span class="status-dot"></span>
+          <span>Storage Synced (classicinstitute.com)</span>
+        </div>
+
+        <a href="classes.html" class="btn btn-sm btn-outline" target="_blank" rel="noopener noreferrer" title="Preview live classes & pricing on the public site">
+          <span>View Public Page</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+
+        <button type="button" class="btn btn-sm btn-outline" id="logoutBtn" title="Sign out of Admin Portal">
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN ADMIN WRAPPER ================= -->
+  <main class="admin-container">
+
+    <!-- Header & Quick Actions -->
+    <div class="admin-header">
+      <div class="admin-title-group">
+        <h1>Fee Packages Management</h1>
+        <p>Create, update, or retire conservatory tuition programs for our Sector 34-A Chandigarh campus & online classes.</p>
+      </div>
+
+      <div class="admin-header-actions">
+        <button type="button" class="btn btn-outline" id="resetDefaultsBtn" title="Reset all packages back to official institute defaults">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          <span>Restore Defaults</span>
+        </button>
+
+        <button type="button" class="btn btn-outline" id="exportJsonBtn" title="Download backup of all current fee packages">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Export JSON</span>
+        </button>
+
+        <button type="button" class="btn btn-outline" id="openImportModalBtn" title="Import packages from JSON file or text">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Import JSON</span>
+        </button>
+
+        <button type="button" class="btn btn-gold" id="openAddModalBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add New Package</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Metrics Stat Cards -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-wrap">📦</div>
+        <div class="metric-data">
+          <h4>Total Packages</h4>
+          <div class="metric-value" id="statTotalPackages">0</div>
+          <div class="metric-sub">Stored in registry</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap">🌟</div>
+        <div class="metric-data">
+          <h4>Active on Website</h4>
+          <div class="metric-value" id="statActivePackages" style="color: var(--color-success);">0</div>
+          <div class="metric-sub">Visible to students</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap">👑</div>
+        <div class="metric-data">
+          <h4>Featured Package</h4>
+          <div class="metric-value" id="statFeaturedPkg" style="font-size: 1.25rem;">—</div>
+          <div class="metric-sub">Highlighted on public page</div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-wrap">🏷️</div>
+        <div class="metric-data">
+          <h4>Starting Monthly Fee</h4>
+          <div class="metric-value" id="statMinFee" style="color: var(--gold-light);">—</div>
+          <div class="metric-sub">Lowest active tier</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Management Console Card -->
+    <div class="console-card">
+      <div class="console-toolbar">
+        <div class="toolbar-search-filter">
+          <div class="search-input-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by package name, badge, description...">
+          </div>
+
+          <select id="filterSelect" class="filter-select">
+            <option value="all">All Packages</option>
+            <option value="active">Active Only</option>
+            <option value="draft">Drafts / Inactive</option>
+          </select>
+
+          <select id="sortSelect" class="filter-select">
+            <option value="default">Default Order</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name">Alphabetical (A-Z)</option>
+          </select>
+        </div>
+
+        <div class="toolbar-controls">
+          <div class="view-switcher">
+            <button type="button" class="view-btn active" id="viewTableBtn" title="Table View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+              <span>Table</span>
+            </button>
+            <button type="button" class="view-btn" id="viewGridBtn" title="Card Grid View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <span>Cards</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Table View -->
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th style="min-width: 240px;">Package Name & Description</th>
+              <th>Badge</th>
+              <th>Monthly Fee</th>
+              <th>Quarterly Fee</th>
+              <th>Annual Fee</th>
+              <th>Status & Inclusions</th>
+              <th style="text-align: right; min-width: 130px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="packagesTableBody">
+            <!-- Dynamic rows populated by js/admin.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2. Card Grid View -->
+      <div class="admin-cards-grid" id="packagesCardGrid" style="display: none;">
+        <!-- Dynamic cards populated by js/admin.js -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= ADD / EDIT PACKAGE MODAL ================= -->
+  <div class="admin-modal-overlay" id="packageModal">
+    <div class="admin-modal-box">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" id="packageModalTitle">Add New Conservatory Package</h3>
+        <button type="button" class="admin-modal-close">✕</button>
+      </div>
+
+      <form id="packageForm">
+        <div class="admin-modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="pkgName">Package Title <span class="req">*</span></label>
+              <input type="text" id="pkgName" class="form-control" placeholder="e.g. Graded Conservatory" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pkgBadge">Ribbon / Popular Badge</label>
+              <input type="text" id="pkgBadge" class="form-control" placeholder="e.g. ★ Most Popular Choice">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Featured Spotlight</label>
+              <div class="switch-group" style="padding-top: 0.35rem;">
+                <label class="switch">
+                  <input type="checkbox" id="pkgFeatured">
+                  <span class="slider"></span>
+                </label>
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">Highlight with Conservatory Gold Border</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pkgStatus">Publish Status</label>
+              <select id="pkgStatus" class="form-control">
+                <option value="active">Active (Visible on public classes page)</option>
+                <option value="draft">Draft (Hidden from public website)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pkgSubtitle">Short Description / Target Audience</label>
+            <textarea id="pkgSubtitle" class="form-control" rows="2" placeholder="e.g. Comprehensive syllabus for Trinity College London, ABRSM, Rockschool, or Gandharva certification."></textarea>
+          </div>
+
+          <!-- Pricing Auto-Calc Bar -->
+          <div class="calc-bar">
+            <span>💡 Enter Monthly fee and use 1-click discount formula:</span>
+            <button type="button" class="calc-btn" id="autoCalcBtn">Auto-Calc Quarterly (-10%) & Annual (-20%)</button>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="pkgMonthlyPrice">Monthly Tuition (₹) <span class="req">*</span></label>
+              <input type="number" id="pkgMonthlyPrice" class="form-control" placeholder="6500" required min="0" step="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pkgQuarterlyPrice">Quarterly Fee (₹)</label>
+              <input type="number" id="pkgQuarterlyPrice" class="form-control" placeholder="17550" min="0" step="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pkgAnnualPrice">Annual Fee (₹)</label>
+              <input type="number" id="pkgAnnualPrice" class="form-control" placeholder="62400" min="0" step="50">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="pkgSessionInfo">Session Frequency Tagline</label>
+              <input type="text" id="pkgSessionInfo" class="form-control" placeholder="e.g. 8 Lessons + Studio Practice Suites">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pkgButtonText">CTA Button Text</label>
+              <input type="text" id="pkgButtonText" class="form-control" placeholder="e.g. Enroll in Graded Program">
+            </div>
+          </div>
+
+          <!-- Dynamic Curriculum / Feature Inclusions -->
+          <div class="form-group">
+            <label class="form-label">Key Features & Inclusions</label>
+            <div class="features-editor-wrap">
+              <div class="features-list" id="featuresList">
+                <!-- Dynamically populated feature chips -->
+              </div>
+
+              <div class="add-feature-row">
+                <input type="text" id="newFeatureInput" class="form-control" placeholder="Type a new feature bullet and press Enter or Add...">
+                <button type="button" class="btn btn-outline btn-sm" id="addFeatureBtn">Add Item</button>
+              </div>
+
+              <div class="feature-presets">
+                <span style="font-size: 0.725rem; color: var(--text-muted); align-self: center;">Quick suggestions:</span>
+                <span class="preset-chip" data-text="8 In-Depth 1-on-1 Sessions with Certified Maestro">+ 8 1-on-1 Sessions</span>
+                <span class="preset-chip" data-text="Official Trinity / ABRSM Exam Registration assistance">+ Trinity / ABRSM Prep</span>
+                <span class="preset-chip" data-text="3 Hours/Week Free Access to sound-treated studio practice rooms">+ Practice Rooms</span>
+                <span class="preset-chip" data-text="Ear training & Music Theory Grade modules included">+ Ear Training & Theory</span>
+                <span class="preset-chip" data-text="Annual Classic Gala stage recital participation">+ Annual Gala Recital</span>
+                <span class="preset-chip" data-text="1 Free Professional Studio Track Recording per quarter">+ Recording Booth</span>
+                <span class="preset-chip" data-text="Flexible 24-hr session rescheduling (up to 2/mo)">+ Flexible Rescheduling</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-outline modal-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-gold">Save Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DELETE CONFIRMATION MODAL ================= -->
+  <div class="admin-modal-overlay" id="deleteModal">
+    <div class="admin-modal-box" style="max-width: 480px;">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title" style="color: #F87171;">Confirm Package Deletion</h3>
+        <button type="button" class="admin-modal-close">✕</button>
+      </div>
+      <div class="admin-modal-body" style="text-align: center; padding: 2rem 1.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+        <p style="color: var(--text-white); font-size: 1.1rem; margin-bottom: 0.5rem;">
+          Are you sure you want to delete <strong id="deletePkgName" style="color: var(--gold-light);"></strong>?
+        </p>
+        <p style="color: var(--text-secondary); font-size: 0.875rem;">
+          This will immediately remove this fee package from both the admin directory and the public classes page.
+        </p>
+      </div>
+      <div class="admin-modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-outline modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Yes, Delete Package</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= IMPORT JSON MODAL ================= -->
+  <div class="admin-modal-overlay" id="importModal">
+    <div class="admin-modal-box" style="max-width: 600px;">
+      <div class="admin-modal-header">
+        <h3 class="admin-modal-title">Import Packages Backup</h3>
+        <button type="button" class="admin-modal-close">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">
+          Upload a <code>.json</code> backup file or paste your JSON array below to restore or synchronize packages.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="importFileInput">Select Backup JSON File</label>
+          <input type="file" id="importFileInput" class="form-control" accept=".json,application/json">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="importJsonTextarea">Or Paste Raw JSON</label>
+          <textarea id="importJsonTextarea" class="form-control" rows="8" placeholder='[{"name": "Custom Package", "monthlyPrice": 5000, ...}]'></textarea>
+        </div>
+      </div>
+      <div class="admin-modal-footer">
+        <button type="button" class="btn btn-outline modal-cancel-btn">Cancel</button>
+        <button type="button" class="btn btn-gold" id="confirmImportBtn">Confirm Import</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/packages-manager.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
